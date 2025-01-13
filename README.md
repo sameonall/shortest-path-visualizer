@@ -8,4 +8,4 @@ A web-based tool to visualize shortest path algorithms like A*, Dijkstra's, and 
 - Cool animations for the shortest path.
 
 ## Live Demo
-[View the live demo here](https://your-username.github.io/shortest-path-visualizer)
+[View the live demo here](https://sameonall.github.io/shortest-path-visualizer)
