@@ -1,18 +1,11 @@
-## Getting Started
+# Shortest Path Visualizer
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A web-based tool to visualize shortest path algorithms like A*, Dijkstra's, and BFS.
 
-## Folder Structure
+## Features
+- Interactive grid for setting start, end, and obstacles.
+- Real-time visualization of algorithm exploration.
+- Cool animations for the shortest path.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Live Demo
+[View the live demo here](https://your-username.github.io/shortest-path-visualizer)
