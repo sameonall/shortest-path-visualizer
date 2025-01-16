@@ -149,7 +149,15 @@ async function aStar() {
     const current = openSet.shift();
 
     if (current.row === endRow && current.col === endCol) {
-      await reconstructPath(current);
+      // Reconstruct the path
+      const path = [];
+      let node = current;
+      while (node) {
+        path.push(node);
+        node = node.parent;
+      }
+      path.reverse();
+      await reconstructPath(path);
       return;
     }
 
@@ -198,18 +206,25 @@ async function dijkstra() {
   const endCol = parseInt(end.dataset.col);
 
   const distances = Array.from({ length: ROWS }, () => Array(COLS).fill(Infinity));
-  const previous = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
   const visited = new Set();
 
   distances[startRow][startCol] = 0;
-  const queue = [{ row: startRow, col: startCol, distance: 0 }];
+  const queue = [{ row: startRow, col: startCol, distance: 0, parent: null }];
 
   while (queue.length > 0) {
     queue.sort((a, b) => a.distance - b.distance);
     const current = queue.shift();
 
     if (current.row === endRow && current.col === endCol) {
-      await reconstructPath(previous[endRow][endCol]);
+      // Reconstruct the path
+      const path = [];
+      let node = current;
+      while (node) {
+        path.push(node);
+        node = node.parent;
+      }
+      path.reverse();
+      await reconstructPath(path);
       return;
     }
 
@@ -225,8 +240,7 @@ async function dijkstra() {
       const newDistance = current.distance + 1;
       if (newDistance < distances[row][col]) {
         distances[row][col] = newDistance;
-        previous[row][col] = current;
-        queue.push({ row, col, distance: newDistance });
+        queue.push({ row, col, distance: newDistance, parent: current });
       }
     }
 
@@ -254,7 +268,15 @@ async function bfs() {
     const current = queue.shift();
 
     if (current.row === endRow && current.col === endCol) {
-      await reconstructPath(current);
+      // Reconstruct the path
+      const path = [];
+      let node = current;
+      while (node) {
+        path.push(node);
+        node = node.parent;
+      }
+      path.reverse();
+      await reconstructPath(path);
       return;
     }
 
@@ -294,13 +316,16 @@ function getNeighbors(row, col) {
 }
 
 // Reconstruct and animate the path
-async function reconstructPath(node) {
-  const path = [];
-  while (node.parent) {
-    path.push(node);
-    node = node.parent;
+async function reconstructPath(path) {
+  if (!Array.isArray(path) || path.length === 0) {
+    alert('No path found!');
+    return;
   }
-  path.reverse();
+
+  const startRow = parseInt(start.dataset.row);
+  const startCol = parseInt(start.dataset.col);
+  const endRow = parseInt(end.dataset.row);
+  const endCol = parseInt(end.dataset.col);
 
   // Clear visited nodes to show only the shortest path
   for (let row = 0; row < ROWS; row++) {
@@ -314,7 +339,7 @@ async function reconstructPath(node) {
   // Animate the shortest path sequentially
   for (let i = 0; i < path.length; i++) {
     const p = path[i];
-    if (grid[p.row][p.col] !== start && grid[p.row][p.col] !== end) {
+    if ((p.row !== startRow || p.col !== startCol) && (p.row !== endRow || p.col !== endCol)) {
       grid[p.row][p.col].classList.add('path');
       await sleep(animationSpeed);
     }
@@ -322,7 +347,7 @@ async function reconstructPath(node) {
 
   // Add a final glowing effect to the path
   for (const p of path) {
-    if (grid[p.row][p.col] !== start && grid[p.row][p.col] !== end) {
+    if ((p.row !== startRow || p.col !== startCol) && (p.row !== endRow || p.col !== endCol)) {
       grid[p.row][p.col].style.animation = 'glow 1s infinite alternate, move 0.5s ease';
     }
   }
